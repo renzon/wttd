@@ -1,0 +1,5 @@
+dj-database-url==0.4.2
+dj-static==0.0.6
+Django==1.8.18
+django-decouple==2.1
+static3==0.7.0
