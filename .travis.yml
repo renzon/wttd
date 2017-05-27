@@ -6,4 +6,4 @@ install: "pip install -r requirements-dev.txt"
 # command to run tests
 script:
   - flake8 eventex
-  - py.test
+  - py.test .
