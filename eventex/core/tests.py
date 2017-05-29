@@ -1,7 +1,14 @@
-from eventex.core.views import home
+import pytest
 
 
-def test_home(rf):
-    req = rf.get('/')
-    resp = home(req)
-    assert 200, resp.status_code
+@pytest.fixture()
+def home_resp(client):
+    return client.get('/')
+
+
+def test_home_status_code(home_resp):
+    assert 200 == home_resp.status_code
+
+
+def test_home_template(home_resp):
+    assert 'index.html' == home_resp.templates[0].name
