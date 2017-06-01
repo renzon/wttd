@@ -52,7 +52,7 @@ def test_form_fields():
 @pytest.fixture()
 def inscricao_post_resp(client):
     data = dict(name='Renzo Nuccitelli', cpf='12345678901',
-                email='renzon@gmail.com', phone='2345678')
+                email='renzo@python.pro.br', phone='2345678')
     resp = client.post('/inscricao/', data)
     return resp
 
@@ -84,3 +84,11 @@ def test_email_from(outbox):
 def test_email_to(outbox):
     email = outbox[0]
     assert ['contato@eventex.com', 'renzo@python.pro.br'] == email.to
+
+
+def test_email_body(outbox):
+    email = outbox[0]
+    assert 'Renzo Nuccitelli' in email.body
+    assert '2345678901' in email.body
+    assert '2345678' in email.body
+    assert 'renzo@python.pro.br' in email.body
