@@ -57,11 +57,30 @@ def inscricao_post_resp(client):
     return resp
 
 
+@pytest.fixture()
+def outbox(inscricao_post_resp, mailoutbox):
+    assert inscricao_post_resp  # is here only to proceed post call
+    return mailoutbox
+
+
 def test_positive_post(inscricao_post_resp):
     assert 302 == inscricao_post_resp.status_code
 
 
-def test_send_subscribe_email(inscricao_post_resp, mailoutbox):
-    assert 1 == len(mailoutbox)
-    # inscricao_post_resp is here only to make a post request
-    assert inscricao_post_resp
+def test_send_subscribe_email(outbox):
+    assert 1 == len(outbox)
+
+
+def test_email_subject(outbox):
+    email = outbox[0]
+    assert 'Confirmação de Inscrição' == email.subject
+
+
+def test_email_from(outbox):
+    email = outbox[0]
+    assert 'contato@eventex.com' == email.from_email
+
+
+def test_email_to(outbox):
+    email = outbox[0]
+    assert ['contato@eventex.com', 'renzo@python.pro.br'] == email.to
