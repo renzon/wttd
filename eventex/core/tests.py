@@ -12,3 +12,7 @@ def test_home_status_code(home_resp):
 
 def test_home_template(home_resp):
     assert 'index.html' == home_resp.templates[0].name
+
+
+def test_subscription_link(home_resp, django_test_case):
+    django_test_case.assertContains(home_resp, 'href="/inscricao/"')
