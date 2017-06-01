@@ -50,10 +50,15 @@ def test_form_fields():
 
 
 @pytest.fixture()
-def inscricao_post_resp(client):
+def success_post_data():
     data = dict(name='Renzo Nuccitelli', cpf='12345678901',
                 email='renzo@python.pro.br', phone='2345678')
-    resp = client.post('/inscricao/', data)
+    return data
+
+
+@pytest.fixture()
+def inscricao_post_resp(client, success_post_data):
+    resp = client.post('/inscricao/', success_post_data)
     return resp
 
 
@@ -92,3 +97,33 @@ def test_email_body(outbox):
     assert '2345678901' in email.body
     assert '2345678' in email.body
     assert 'renzo@python.pro.br' in email.body
+
+
+@pytest.fixture()
+def error_resp(client):
+    return client.post('/inscricao/', {})
+
+
+def test_error(error_resp):
+    assert 200, error_resp.status_code
+
+
+def test_error_template(error_resp):
+    assert ('subscriptions/subscription_form.html' ==
+            error_resp.templates[0].name)
+
+
+def test_error_has_form(error_resp):
+    assert isinstance(error_resp.context['form'], SubscriptionForm)
+
+
+def test_error_msgs(error_resp):
+    form = error_resp.context['form']
+    assert form.errors
+
+
+# success subscriptions
+
+def test_success_msg(client, success_post_data, django_test_case):
+    resp = client.post('/inscricao/', success_post_data, follow=True)
+    django_test_case.assertContains(resp, 'Inscrição realizada com sucesso!')
