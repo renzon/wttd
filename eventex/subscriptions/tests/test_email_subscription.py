@@ -8,18 +8,18 @@ def email(outbox):
     return outbox[0]
 
 
-def test_email_subject(email):
+def test_subject(email):
     assert 'Confirmação de Inscrição' == email.subject
 
 
-def test_email_from(email):
+def test_from(email):
     assert 'contato@eventex.com' == email.from_email
 
 
-def test_email_to(email):
+def test_to(email):
     assert ['contato@eventex.com', 'renzo@python.pro.br'] == email.to
 
 
 @pytest.mark.parametrize('data', post_data().values())
-def test_email_body(data, email):
+def test_body(data, email):
     assert data in email.body

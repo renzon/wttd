@@ -52,38 +52,12 @@ def test_form_fields():
     assert 'name cpf email phone'.split() == list(form.fields)
 
 
-# Form post tests
-
-
 def test_post(post_resp):
     assert 302 == post_resp.status_code
 
 
 def test_send_subscribe_email(outbox):
     assert 1 == len(outbox)
-
-
-@pytest.fixture()
-def error_resp(client):
-    return client.post('/inscricao/', {})
-
-
-def test_error_status_code(error_resp):
-    assert 200, error_resp.status_code
-
-
-def test_error_template(error_resp):
-    assert ('subscriptions/subscription_form.html' ==
-            error_resp.templates[0].name)
-
-
-def test_error_has_form(error_resp):
-    assert isinstance(error_resp.context['form'], SubscriptionForm)
-
-
-def test_error_has_msgs(error_resp):
-    form = error_resp.context['form']
-    assert form.errors
 
 
 def test_success_msg(client, post_data, django_test_case):
