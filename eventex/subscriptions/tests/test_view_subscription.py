@@ -46,12 +46,6 @@ def test_form_in_context(get_resp):
     assert isinstance(get_resp.context['form'], SubscriptionForm)
 
 
-def test_form_fields():
-    """Subscription Form must have 4 fields"""
-    form = SubscriptionForm()
-    assert 'name cpf email phone'.split() == list(form.fields)
-
-
 def test_post(post_resp):
     assert 302 == post_resp.status_code
 
