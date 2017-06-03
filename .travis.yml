@@ -4,7 +4,7 @@ python:
 # command to install dependencies
 install:
   - cp contrib/env-sample .env
-  - pip install -r requirements-dev.txt
+  - pip install -q -r requirements-dev.txt
 # command to run tests
 script:
   - flake8 eventex
