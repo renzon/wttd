@@ -1,9 +1,10 @@
 import pytest
 
 from eventex.subscriptions.forms import SubscriptionForm
+from eventex.subscriptions.models import Subscription
 
+pytestmark = pytest.mark.django_db
 
-# Form GET tests
 
 @pytest.fixture()
 def get_resp(client):
@@ -58,3 +59,8 @@ def test_success_msg(client, post_data, django_test_case):
     """Test a successful subscritption"""
     resp = client.post('/inscricao/', post_data, follow=True)
     django_test_case.assertContains(resp, 'Inscrição realizada com sucesso!')
+
+
+@pytest.mark.usefixtures('post_resp')
+def test_save():
+    assert Subscription.objects.exists()

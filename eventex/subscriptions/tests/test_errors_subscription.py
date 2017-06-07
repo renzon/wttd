@@ -1,6 +1,7 @@
 import pytest
 
 from eventex.subscriptions.forms import SubscriptionForm
+from eventex.subscriptions.models import Subscription
 
 
 @pytest.fixture()
@@ -24,3 +25,8 @@ def test_error_has_form(error_resp):
 def test_error_has_msgs(error_resp):
     form = error_resp.context['form']
     assert form.errors
+
+
+@pytest.mark.usefixtures('transactional_db', 'error_resp')
+def test_negative_save():
+    assert not Subscription.objects.exists()

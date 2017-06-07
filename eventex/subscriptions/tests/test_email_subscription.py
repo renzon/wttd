@@ -2,6 +2,8 @@ import pytest
 
 from eventex.subscriptions.tests.conftest import post_data
 
+pytestmark = pytest.mark.django_db
+
 
 @pytest.fixture
 def email(outbox):
