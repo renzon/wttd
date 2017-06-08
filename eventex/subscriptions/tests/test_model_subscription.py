@@ -26,3 +26,7 @@ def test_create():
 def test_created_at(subscription):
     """Subscription must save da datetime it is created"""
     assert isinstance(subscription.created_at, datetime)
+
+
+def test_str(subscription):
+    assert 'Renzo' == str(subscription)
