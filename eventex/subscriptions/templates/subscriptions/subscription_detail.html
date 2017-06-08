@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <!-- OVERVIEW -->
+  <section>
+
+    <div class="content row padding-bottom-3 desktop-12 container">
+      <h1>Obrigado por se inscrever!</h1>
+      <p> Estes foram os dados que vc nos forneceu: </p>
+      <ul>
+        <li>Nome: {{ subscription.name }}</li>
+        <li>CPF: {{ subscription.cpf }}</li>
+        <li>Email: {{ subscription.email }}</li>
+        <li>Telefone: {{ subscription.phone }}</li>
+      </ul>
+
+      <div class="desktop-6">
+      </div>
+    </div>
+  </section>
+{% endblock %}

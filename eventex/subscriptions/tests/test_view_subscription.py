@@ -47,18 +47,12 @@ def test_form_in_context(get_resp):
     assert isinstance(get_resp.context['form'], SubscriptionForm)
 
 
-def test_post(post_resp):
-    assert 302 == post_resp.status_code
+def test_post(django_test_case, post_resp):
+    django_test_case.assertRedirects(post_resp, '/inscricao/1/')
 
 
 def test_send_subscribe_email(outbox):
     assert 1 == len(outbox)
-
-
-def test_success_msg(client, post_data, django_test_case):
-    """Test a successful subscritption"""
-    resp = client.post('/inscricao/', post_data, follow=True)
-    django_test_case.assertContains(resp, 'Inscrição realizada com sucesso!')
 
 
 @pytest.mark.usefixtures('post_resp')

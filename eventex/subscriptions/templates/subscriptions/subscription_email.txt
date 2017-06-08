@@ -4,7 +4,7 @@ Obrigado por se inscrever no Eventex.
 
 Estes foram os dados que vc nos forneceu:
 
-Nome: {{ name }}
-CPF: {{ cpf }}
-Email: {{ email }}
-Telefone: {{ phone }}
+Nome: {{ subscription.name }}
+CPF: {{ subscription.cpf }}
+Email: {{ subscription.email }}
+Telefone: {{ subscription.phone }}
