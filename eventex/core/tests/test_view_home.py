@@ -16,4 +16,5 @@ def test_home_template(home_resp):
 
 
 def test_subscription_link(home_resp, django_test_case):
-    django_test_case.assertContains(home_resp, 'href="/inscricao/"')
+    new_subscription = resolve_url('subscriptions:new')
+    django_test_case.assertContains(home_resp, f'href="{new_subscription}"')

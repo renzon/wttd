@@ -1,4 +1,5 @@
 import pytest
+from django.shortcuts import resolve_url
 
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
@@ -6,7 +7,7 @@ from eventex.subscriptions.models import Subscription
 
 @pytest.fixture()
 def error_resp(client):
-    return client.post('/inscricao/', {})
+    return client.post(resolve_url('subscriptions:new'), {})
 
 
 def test_error_status_code(error_resp):

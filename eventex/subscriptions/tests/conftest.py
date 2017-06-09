@@ -1,4 +1,5 @@
 import pytest
+from django.shortcuts import resolve_url
 
 
 @pytest.fixture()
@@ -9,7 +10,7 @@ def post_data():
 
 @pytest.fixture()
 def post_resp(client, post_data):
-    return client.post('/inscricao/', post_data)
+    return client.post(resolve_url('subscriptions:new'), post_data)
 
 
 @pytest.fixture()
