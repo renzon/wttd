@@ -18,10 +18,16 @@ class SubscriptionForm(forms.Form):
     cpf = forms.CharField(
         label='CPF',
         validators=[validate_digits_only, validate_has_11_chars])
-    email = forms.EmailField()
-    phone = forms.CharField(label='Telefone')
+    email = forms.EmailField(required=False)
+    phone = forms.CharField(label='Telefone', required=False)
 
     def clean_name(self):
         name = self.cleaned_data['name']
         capitalized_names = map(str.capitalize, name.split())
         return ' '.join(capitalized_names)
+
+    def clean(self):
+        optional_fields = map(self.cleaned_data.get, 'email phone'.split())
+        if not any(optional_fields):
+            raise ValidationError('Informe seu email ou telefone')
+        return self.cleaned_data

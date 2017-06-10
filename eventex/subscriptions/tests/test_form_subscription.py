@@ -39,6 +39,24 @@ def test_capitalized_name(form: SubscriptionForm, name, expected):
     assert expected == form.cleaned_data['name']
 
 
+@pytest.mark.parametrize('field', 'email phone'.split())
+def test_optional_field(form, field):
+    edit_and_validate(form, **{field: ''})
+    assert {} == form.errors
+
+
+@pytest.mark.parametrize(
+    'email,expected',
+    [
+        ('', set(['__all__'])),
+        ('invalid email', set('__all__ email'.split()))
+    ])
+def test_must_inform_email_or_phone(form, email, expected):
+    """Email and Phone are optional, but at least one must be informed"""
+    edit_and_validate(form, email=email, phone='')
+    assert expected == set(form.errors)
+
+
 def assert_field_error_code(form, field, error_code):
     errors = form.errors.as_data()
     errors_list = errors[field]
