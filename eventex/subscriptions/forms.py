@@ -20,3 +20,8 @@ class SubscriptionForm(forms.Form):
         validators=[validate_digits_only, validate_has_11_chars])
     email = forms.EmailField()
     phone = forms.CharField(label='Telefone')
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        capitalized_names = map(str.capitalize, name.split())
+        return ' '.join(capitalized_names)

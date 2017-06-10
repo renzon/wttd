@@ -26,6 +26,19 @@ def test_cpf_has_11_digits(form: SubscriptionForm, cpf):
     assert_field_error_code(form, 'cpf', 'length')
 
 
+@pytest.mark.parametrize(
+    'name,expected',
+    [
+        ('renzo nuccitelli', 'Renzo Nuccitelli'),
+        ('RENZO NUCCITELLI', 'Renzo Nuccitelli'),
+        ('ReNzO NuCcItElLi', 'Renzo Nuccitelli'),
+        ('foo bar', 'Foo Bar'),
+    ])
+def test_capitalized_name(form: SubscriptionForm, name, expected):
+    edit_and_validate(form, name=name)
+    assert expected == form.cleaned_data['name']
+
+
 def assert_field_error_code(form, field, error_code):
     errors = form.errors.as_data()
     errors_list = errors[field]
@@ -33,6 +46,6 @@ def assert_field_error_code(form, field, error_code):
     assert error_code == exception.code
 
 
-def edit_and_validate(form, cpf):
-    form.data['cpf'] = cpf
+def edit_and_validate(form, **kwargs):
+    form.data.update(kwargs)
     form.is_valid()
