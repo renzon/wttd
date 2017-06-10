@@ -30,3 +30,7 @@ def test_created_at(subscription):
 
 def test_str(subscription):
     assert 'Renzo' == str(subscription)
+
+
+def test_default_paid(subscription):
+    assert not subscription.paid

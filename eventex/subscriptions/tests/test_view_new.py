@@ -1,4 +1,5 @@
 import pytest
+from django.shortcuts import resolve_url
 
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
@@ -8,7 +9,7 @@ pytestmark = pytest.mark.django_db
 
 @pytest.fixture()
 def get_resp(client):
-    return client.get('/inscricao/')
+    return client.get(resolve_url('subscriptions:new'))
 
 
 def test_get_status_code(get_resp):
@@ -48,7 +49,8 @@ def test_form_in_context(get_resp):
 
 
 def test_post(django_test_case, post_resp):
-    django_test_case.assertRedirects(post_resp, '/inscricao/1/')
+    django_test_case.assertRedirects(
+        post_resp, resolve_url('subscriptions:detail', 1))
 
 
 def test_send_subscribe_email(outbox):

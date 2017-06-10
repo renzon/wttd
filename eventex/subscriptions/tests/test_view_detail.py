@@ -1,4 +1,5 @@
 import pytest
+from django.shortcuts import resolve_url
 
 from eventex.subscriptions.models import Subscription
 from eventex.subscriptions.tests.conftest import post_data
@@ -16,7 +17,7 @@ def subscription(post_data):
 @pytest.fixture()
 def get_resp(client, subscription):
     assert subscription  # used to avoid unused param
-    return client.get('/inscricao/{}/'.format(subscription.pk))
+    return client.get(resolve_url('subscriptions:detail', subscription.pk))
 
 
 def test_get_status_code(get_resp):
@@ -41,5 +42,5 @@ def test_html(django_test_case, get_resp, data):
 
 
 def test_not_existing_subscription(client):
-    resp = client.get('/inscricao/0/')
+    resp = client.get(resolve_url('subscriptions:detail', 0))
     assert 404 == resp.status_code

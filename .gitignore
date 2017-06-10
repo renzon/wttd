@@ -90,3 +90,6 @@ ENV/
 
 #Django
 staticfiles/
+
+#dev bd
+db.sqlite3
