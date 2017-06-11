@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/renzon/wttd.svg?branch=master)](https://travis-ci.org/renzon/wttd)
 [![Code Health](https://landscape.io/github/renzon/wttd/master/landscape.svg?style=flat)](https://landscape.io/github/renzon/wttd/master)
+[![codecov](https://codecov.io/gh/renzon/wttd/branch/master/graph/badge.svg)](https://codecov.io/gh/renzon/wttd)
 [![Updates](https://pyup.io/repos/github/renzon/wttd/shield.svg)](https://pyup.io/repos/github/renzon/wttd/)
 [![Python 3](https://pyup.io/repos/github/renzon/wttd/python-3-shield.svg)](https://pyup.io/repos/github/renzon/wttd/)
 
