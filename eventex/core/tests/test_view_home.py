@@ -18,3 +18,22 @@ def test_home_template(home_resp):
 def test_subscription_link(home_resp, django_test_case):
     new_subscription = resolve_url('subscriptions:new')
     django_test_case.assertContains(home_resp, f'href="{new_subscription}"')
+
+
+@pytest.mark.parametrize(
+    'content',
+    [
+        'Grace Hopper', '//hbn.link/hopper-pic',
+        'Alan Turing', '//hbn.link/turing-pic'
+    ]
+)
+def test_keynote_speakers(django_test_case, home_resp, content):
+    """Test keynotes are present on home page"""
+    django_test_case.assertContains(home_resp, content)
+
+
+def test_speakers_link(django_test_case, home_resp):
+    """Test speakers link is present on home page"""
+    path = resolve_url('home')
+    link = f'href="{path}#speakers"'
+    django_test_case.assertContains(home_resp, link)
