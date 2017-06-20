@@ -1,25 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-
-def validate_digits_only(cpf):
-    if not cpf.isdigit():
-        raise ValidationError('CPF deve conter apenas números', 'digits')
+from eventex.subscriptions.models import Subscription
 
 
-def validate_has_11_chars(cpf):
-    if len(cpf) != 11:
-        raise ValidationError('CPF deve conter exatamente 11 dígitos',
-                              'length')
-
-
-class SubscriptionForm(forms.Form):
-    name = forms.CharField(label='Nome')
-    cpf = forms.CharField(
-        label='CPF',
-        validators=[validate_digits_only, validate_has_11_chars])
-    email = forms.EmailField(required=False)
-    phone = forms.CharField(label='Telefone', required=False)
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Subscription
+        fields = 'name cpf email phone'.split()
 
     def clean_name(self):
         name = self.cleaned_data['name']
@@ -27,6 +15,7 @@ class SubscriptionForm(forms.Form):
         return ' '.join(capitalized_names)
 
     def clean(self):
+        self.cleaned_data = super().clean()
         optional_fields = map(self.cleaned_data.get, 'email phone'.split())
         if not any(optional_fields):
             raise ValidationError('Informe seu email ou telefone')
