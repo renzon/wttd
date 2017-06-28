@@ -1,15 +1,15 @@
-from collections import namedtuple
-
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from eventex.core.models import Speaker
+
 
 def home(request):
-    Speaker = namedtuple('Speaker', 'name, photo')
-    speakers = [
-        Speaker('Grace Hopper', '//hbn.link/hopper-pic'),
-        Speaker('Alan Turing', '//hbn.link/turing-pic')
-    ]
+    speakers = Speaker.objects.all()
 
     return render(request, 'index.html', {'speakers': speakers})
+
+
+def speaker_detail(request, slug):
+    speaker = get_object_or_404(Speaker, slug=slug)
+    return render(request, 'core/speaker_detail.html', {'speaker': speaker})

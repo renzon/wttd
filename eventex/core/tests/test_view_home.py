@@ -1,5 +1,14 @@
 import pytest
+from django.core.management import call_command
 from django.shortcuts import resolve_url
+
+pytestmark = pytest.mark.django_db
+
+
+@pytest.fixture(scope='session', autouse=True)
+def django_db_setup(django_db_blocker):
+    with django_db_blocker.unblock():
+        call_command('loaddata', 'eventex/core/fixtures/keynotes.json')
 
 
 @pytest.fixture()
@@ -23,8 +32,14 @@ def test_subscription_link(home_resp, django_test_case):
 @pytest.mark.parametrize(
     'content',
     [
-        'Grace Hopper', '//hbn.link/hopper-pic',
-        'Alan Turing', '//hbn.link/turing-pic'
+
+        'Grace Hopper',
+        'href="{}"'.format(resolve_url('speaker_detail', slug='grace-hopper')),
+        '//hbn.link/hopper-pic',
+        'Alan Turing',
+        'href="{}"'.format(resolve_url(
+            'speaker_detail', slug='alan-turing')),
+        '//hbn.link/turing-pic'
     ]
 )
 def test_keynote_speakers(django_test_case, home_resp, content):
