@@ -65,6 +65,10 @@ def test_afternoon_talk(afternoon_talk):
     assert [afternoon_talk] == list(Talk.objects.at_afternoon())
 
 
+def test_ordering():
+    assert ['start'] == Talk._meta.ordering
+
+
 @pytest.fixture
 def course():
     return Course.objects.create(
@@ -95,3 +99,7 @@ def test_course_str(course):
 
 def test_course_manager():
     assert isinstance(Course.objects, PeriodManager)
+
+
+def test_course_ordering():
+    assert ['start'] == Course._meta.ordering
