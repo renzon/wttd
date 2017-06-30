@@ -1,18 +1,20 @@
 import pytest
 from django.shortcuts import resolve_url
 
-from eventex.core.models import Talk, Speaker
+from eventex.core.models import Talk, Speaker, Course
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
 def talk_list_get(client):
-    talks = [
+    activities = [
         Talk(title='Título da Palestra', start='10:00',
              description='Descrição da palestra.'),
         Talk(title='Título da Palestra', start='13:00',
-             description='Descrição da palestra.')
+             description='Descrição da palestra.'),
+        Course(title='Título do Curso', start='9:00',
+               description='Descrição do curso.', slots=20)
     ]
     speaker = Speaker.objects.create(
         name='Henrique Bastos',
@@ -20,9 +22,9 @@ def talk_list_get(client):
         website='//henriquebastos.net',
     )
 
-    for t in talks:
-        t.save()
-        t.speakers.add(speaker)
+    for a in activities:
+        a.save()
+        a.speakers.add(speaker)
     return client.get(resolve_url('talk_list'))
 
 
@@ -38,13 +40,16 @@ def test_template(talk_list_get, django_test_case):
     'ocurrencies,content',
     [
         (2, 'Título da Palestra'),
-        (2, 'Henrique Bastos'),
-        (2, '/palestrantes/henrique-bastos'),
+        (3, 'Henrique Bastos'),
+        (3, '/palestrantes/henrique-bastos'),
         (2, 'Descrição da palestra'),
         (1, '10:00'),
         (1, '13:00'),
         (1, 'Manhã'),
         (1, 'Tarde'),
+        (1, 'Título do Curso'),
+        (1, '9:00'),
+        (1, 'Descrição do curso.'),
     ]
 )
 def test_content(talk_list_get, django_test_case, ocurrencies, content):
@@ -55,7 +60,9 @@ def test_content(talk_list_get, django_test_case, ocurrencies, content):
     'var',
     [
         'morning_talks',
-        'afternoon_talks'
+        'afternoon_talks',
+        'courses',
+
     ]
 )
 def test_context(talk_list_get, var):

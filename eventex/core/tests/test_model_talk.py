@@ -2,7 +2,7 @@ import pytest
 from model_mommy import mommy
 
 from eventex.core.managers import PeriodManager
-from eventex.core.models import Talk
+from eventex.core.models import Talk, Course
 
 pytestmark = pytest.mark.django_db
 
@@ -63,3 +63,35 @@ def test_morning_talk(morning_talk):
 
 def test_afternoon_talk(afternoon_talk):
     assert [afternoon_talk] == list(Talk.objects.at_afternoon())
+
+
+@pytest.fixture
+def course():
+    return Course.objects.create(
+        title='Título do Curso',
+        start='9:00',
+        description='Descrição do curso.',
+        slots=20
+    )
+
+
+@pytest.mark.usefixtures('course')
+def test_course_create():
+    assert Course.objects.exists()
+
+
+def test_course_spekar(course):
+    course.speakers.create(
+        name='Henrique Bastos',
+        slug='henrique-bastos',
+        website='//henriquebastos.net',
+    )
+    assert 1 == course.speakers.count()
+
+
+def test_course_str(course):
+    assert course.title == str(course)
+
+
+def test_course_manager():
+    assert isinstance(Course.objects, PeriodManager)

@@ -44,7 +44,7 @@ class Contact(models.Model):
     objects = KindQuerySet.as_manager()
 
 
-class Talk(models.Model):
+class Activity(models.Model):
     title = models.CharField('título', max_length=200)
     start = models.TimeField('início', blank=True, null=True)
     description = models.TextField('descrição', blank=True)
@@ -55,8 +55,21 @@ class Talk(models.Model):
     objects = PeriodManager()
 
     class Meta:
-        verbose_name = 'palestra'
-        verbose_name_plural = 'palestras'
+        abstract = True
 
     def __str__(self):
         return self.title
+
+
+class Talk(Activity):
+    class Meta:
+        verbose_name = 'palestra'
+        verbose_name_plural = 'palestras'
+
+
+class Course(Activity):
+    slots = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'curso'
+        verbose_name_plural = 'cursos'
