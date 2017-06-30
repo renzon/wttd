@@ -1,3 +1,6 @@
+import operator
+from itertools import chain
+
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -16,9 +19,14 @@ def speaker_detail(request, slug):
 
 
 def talk_list(request):
+    morning_talks = chain(Talk.objects.at_morning(),
+                          Course.objects.at_morning())
+    morning_talks = sorted(morning_talks, key=operator.attrgetter('start'))
+    afternoon_talks = chain(Talk.objects.at_afternoon(),
+                            Course.objects.at_afternoon())
+    afternoon_talks = sorted(afternoon_talks, key=operator.attrgetter('start'))
     context = {
-        'morning_talks': Talk.objects.at_morning(),
-        'afternoon_talks': Talk.objects.at_afternoon(),
-        'courses': Course.objects.all()
+        'morning_talks': morning_talks,
+        'afternoon_talks': afternoon_talks,
     }
     return render(request, 'core/talk_list.html', context)

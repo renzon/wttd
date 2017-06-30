@@ -61,7 +61,6 @@ def test_content(talk_list_get, django_test_case, ocurrencies, content):
     [
         'morning_talks',
         'afternoon_talks',
-        'courses',
 
     ]
 )
