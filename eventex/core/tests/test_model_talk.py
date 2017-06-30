@@ -1,5 +1,7 @@
 import pytest
+from model_mommy import mommy
 
+from eventex.core.managers import PeriodManager
 from eventex.core.models import Talk
 
 pytestmark = pytest.mark.django_db
@@ -39,3 +41,25 @@ def test_start_null():
 
 def test_str(talk):
     assert 'Título da Palestra' == str(talk)
+
+
+@pytest.fixture
+def morning_talk():
+    return mommy.make(Talk, start='11:59')
+
+
+@pytest.fixture
+def afternoon_talk():
+    return mommy.make(Talk, start='12:00')
+
+
+def test_manager():
+    assert isinstance(Talk.objects, PeriodManager)
+
+
+def test_morning_talk(morning_talk):
+    assert [morning_talk] == list(Talk.objects.at_morning())
+
+
+def test_afternoon_talk(afternoon_talk):
+    assert [afternoon_talk] == list(Talk.objects.at_afternoon())
