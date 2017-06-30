@@ -52,3 +52,10 @@ def test_speakers_link(django_test_case, home_resp):
     path = resolve_url('home')
     link = f'href="{path}#speakers"'
     django_test_case.assertContains(home_resp, link)
+
+
+def test_talks_link(django_test_case, home_resp):
+    """Test speakers link is present on home page"""
+    path = resolve_url('talk_list')
+    link = f'href="{path}"'
+    django_test_case.assertContains(home_resp, link)
