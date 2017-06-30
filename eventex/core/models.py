@@ -2,6 +2,8 @@
 from django.db import models
 from django.shortcuts import resolve_url
 
+from eventex.core.managers import KindQuerySet
+
 
 class Speaker(models.Model):
     name = models.CharField('nome', max_length=255)
@@ -22,11 +24,11 @@ class Speaker(models.Model):
 
 
 class Contact(models.Model):
-    EMAIL = 'Email'
-    PHONE = 'Phone'
+    EMAIL = 'E'
+    PHONE = 'P'
     KINDS = (
-        ('E', EMAIL),
-        ('P', PHONE),
+        (EMAIL, 'Email'),
+        (PHONE, 'Phone'),
     )
     speaker = models.ForeignKey('Speaker', verbose_name='palestrante')
     kind = models.CharField('tipo', max_length=1, choices=KINDS)
@@ -38,6 +40,8 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.value
+
+    objects = KindQuerySet.as_manager()
 
 
 class Talk(models.Model):
