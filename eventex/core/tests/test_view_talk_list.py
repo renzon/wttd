@@ -56,14 +56,7 @@ def test_content(talk_list_get, django_test_case, ocurrencies, content):
     django_test_case.assertContains(talk_list_get, content, ocurrencies)
 
 
-@pytest.mark.parametrize(
-    'var',
-    [
-        'morning_talks',
-        'afternoon_talks',
-
-    ]
-)
+@pytest.mark.parametrize('var', ['talk_list'])
 def test_context(talk_list_get, var):
     context = talk_list_get.context
     assert var in context

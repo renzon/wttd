@@ -9,7 +9,7 @@ class KindQuerySet(models.QuerySet):
         return self.filter(kind=self.model.EMAIL)
 
 
-class PeriodManager(models.Manager):
+class PeriodQuerySet(models.QuerySet):
     MIDDAY = '12:00'
 
     def at_morning(self):

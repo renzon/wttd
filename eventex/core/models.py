@@ -2,7 +2,7 @@
 from django.db import models
 from django.shortcuts import resolve_url
 
-from eventex.core.managers import KindQuerySet, PeriodManager
+from eventex.core.managers import KindQuerySet, PeriodQuerySet
 
 
 class Speaker(models.Model):
@@ -52,7 +52,7 @@ class Talk(models.Model):
                                       verbose_name='palestrantes',
                                       blank=True)
 
-    objects = PeriodManager()
+    objects = PeriodQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'palestra'
@@ -65,7 +65,7 @@ class Talk(models.Model):
 
 class Course(Talk):
     slots = models.IntegerField()
-    objects = PeriodManager()
+    objects = PeriodQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'curso'

@@ -1,53 +1,32 @@
 from django.conf import settings
 from django.core import mail
-from django.http.response import HttpResponseRedirect, Http404
-from django.shortcuts import render, resolve_url
 from django.template.loader import render_to_string
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
 
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
 
-def new(request):
-    if request.method == 'POST':
-        return create(request)
-    return empty_form(request)
+class SubscriptionCreate(CreateView):
+    model = Subscription
+    form_class = SubscriptionForm
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.send_email()
+        return response
+
+    def send_email(self):
+        template = 'subscriptions/subscription_email.txt'
+        subject = 'Confirmação de Inscrição'
+        from_ = settings.DEFAULT_FROM_EMAIL
+        to = self.object.email
+        context = {'subscription': self.object}
+        body = render_to_string(template, context)
+        mail.send_mail(subject, body, from_, [from_, to])
 
 
-def empty_form(request):
-    ctx = {'form': SubscriptionForm()}
-    return render(request, 'subscriptions/subscription_form.html', ctx)
+new = SubscriptionCreate.as_view()
 
-
-def create(request):
-    form = SubscriptionForm(request.POST)
-
-    if not form.is_valid():
-        ctx = {'form': form}
-        return render(request, 'subscriptions/subscription_form.html', ctx)
-
-    subscription = form.save()
-
-    _send_mail('subscriptions/subscription_email.txt',
-               'Confirmação de Inscrição',
-               settings.DEFAULT_FROM_EMAIL,
-               subscription.email,
-               {'subscription': subscription})
-
-    return HttpResponseRedirect(
-        resolve_url('subscriptions:detail', subscription.pk))
-
-
-def detail(request, pk):
-    try:
-        subscription = Subscription.objects.get(pk=pk)
-    except Subscription.DoesNotExist:
-        raise Http404
-    else:
-        ctx = {'subscription': subscription}
-        return render(request, 'subscriptions/subscription_detail.html', ctx)
-
-
-def _send_mail(template, subject, from_, to, context):
-    body = render_to_string(template, context)
-    mail.send_mail(subject, body, from_, [from_, to])
+detail = DetailView.as_view(model=Subscription)

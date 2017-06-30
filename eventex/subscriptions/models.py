@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import resolve_url
 
 from eventex.subscriptions.validators import validate_has_11_chars, \
     validate_digits_only
@@ -22,5 +23,7 @@ class Subscription(models.Model):
         ordering = ('-created_at',)
 
     def __str__(self):
-
         return self.name
+
+    def get_absolute_url(self):
+        return resolve_url('subscriptions:detail', self.pk)

@@ -1,7 +1,7 @@
 import pytest
 from model_mommy import mommy
 
-from eventex.core.managers import PeriodManager
+from eventex.core.managers import PeriodQuerySet
 from eventex.core.models import Talk, Course
 
 pytestmark = pytest.mark.django_db
@@ -54,7 +54,7 @@ def afternoon_talk():
 
 
 def test_manager():
-    assert isinstance(Talk.objects, PeriodManager)
+    assert isinstance(Talk.objects.get_queryset(),PeriodQuerySet)
 
 
 def test_morning_talk(morning_talk):
@@ -98,7 +98,7 @@ def test_course_str(course):
 
 
 def test_course_manager():
-    assert isinstance(Course.objects, PeriodManager)
+    assert isinstance(Course.objects.get_queryset(), PeriodQuerySet)
 
 
 def test_course_ordering():
