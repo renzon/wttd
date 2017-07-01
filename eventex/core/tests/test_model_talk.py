@@ -54,7 +54,7 @@ def afternoon_talk():
 
 
 def test_manager():
-    assert isinstance(Talk.objects.get_queryset(),PeriodQuerySet)
+    assert isinstance(Talk.objects.get_queryset(), PeriodQuerySet)
 
 
 def test_morning_talk(morning_talk):

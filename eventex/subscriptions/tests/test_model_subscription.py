@@ -37,6 +37,6 @@ def test_default_paid(subscription):
     assert not subscription.paid
 
 
-def test_get_absolute_url(subscription:Subscription):
+def test_get_absolute_url(subscription: Subscription):
     url = resolve_url('subscriptions:detail', subscription.pk)
     assert url == subscription.get_absolute_url()

@@ -6,7 +6,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0011_auto_20170630_2010'),
     ]
@@ -14,6 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='talk',
-            options={'ordering': ['start'], 'verbose_name': 'palestra', 'verbose_name_plural': 'palestras'},
+            options={'ordering': ['start'], 'verbose_name': 'palestra',
+                     'verbose_name_plural': 'palestras'},
         ),
     ]
