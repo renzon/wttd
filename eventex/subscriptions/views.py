@@ -1,3 +1,6 @@
+import json
+
+from django.http import HttpResponse
 from django.views.generic.detail import DetailView
 
 from eventex.subscriptions.forms import SubscriptionForm
@@ -11,3 +14,11 @@ new = EmailCreateView.as_view(
 )
 
 detail = DetailView.as_view(model=Subscription)
+
+
+def json_example(request):
+    to_json = {
+        "Books": "Books",
+        "Games": "Games"
+    }
+    return HttpResponse(json.dumps(to_json), content_type='application/json')
