@@ -27,3 +27,24 @@ class Subscription(models.Model):
 
     def get_absolute_url(self):
         return resolve_url('subscriptions:detail', self.pk)
+
+
+from django.db import models
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=30)
+
+    @property
+    def population(self):
+        dct = self.city_set.aggregate(models.Sum('population'))
+        return dct['population__sum']
+
+
+class City(models.Model):
+    name = models.CharField(max_length=30)
+    country = models.ForeignKey(Country)
+    population = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.country

@@ -2,8 +2,9 @@ from datetime import datetime
 
 import pytest
 from django.shortcuts import resolve_url
+from model_mommy import mommy
 
-from eventex.subscriptions.models import Subscription
+from eventex.subscriptions.models import Subscription, Country, City
 
 pytestmark = pytest.mark.django_db
 
@@ -40,3 +41,10 @@ def test_default_paid(subscription):
 def test_get_absolute_url(subscription: Subscription):
     url = resolve_url('subscriptions:detail', subscription.pk)
     assert url == subscription.get_absolute_url()
+
+
+def test_country_aggregation():
+    country = mommy.make(Country)
+    mommy.make(City, population=2, country=country)
+    mommy.make(City, population=3, country=country)
+    assert 5 == country.population
