@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+from django.db import models
 from django.shortcuts import resolve_url
 from model_mommy import mommy
 
@@ -48,3 +49,20 @@ def test_country_aggregation():
     mommy.make(City, population=2, country=country)
     mommy.make(City, population=3, country=country)
     assert 5 == country.population
+
+
+def test_countries_aggregation():
+    brazil = mommy.make(Country, name='Brazil')
+    mommy.make(City, population=4, country=brazil)
+    mommy.make(City, population=5, country=brazil)
+
+    usa = mommy.make(Country, name='United States')
+    mommy.make(City, population=2, country=usa)
+    mommy.make(City, population=3, country=usa)
+
+    countries = list(Country.objects.order_by('name').annotate(total_population=models.Sum('city__population')))
+    brasil_db, usa_db = countries
+    assert brasil_db == brazil
+    assert usa_db == usa
+    assert 9 == brasil_db.total_population
+    assert 5 == usa_db.total_population
