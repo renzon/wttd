@@ -4,6 +4,6 @@ Django==1.11.6
 python-decouple==3.1
 static3==0.7.0
 gunicorn==19.7.1
-psycopg2==2.7.3.1
+psycopg2==2.7.3.2
 django-extensions==1.9.1
 pytz==2017.2
