@@ -3,7 +3,7 @@ dj-static==0.0.6
 Django==1.11.6
 python-decouple==3.1
 static3==0.7.0
-gunicorn==19.7.1
+gunicorn==19.8.0
 psycopg2==2.7.3.1
 django-extensions==1.9.1
 pytz==2017.2
