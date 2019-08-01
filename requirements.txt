@@ -6,4 +6,4 @@ static3==0.7.0
 gunicorn==19.7.1
 psycopg2==2.7.3.1
 django-extensions==1.9.1
-pytz==2017.2
+pytz==2019.2
